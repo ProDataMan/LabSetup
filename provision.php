@@ -16,11 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Fetch class details
     $class_result = $conn->query("SELECT * FROM classes WHERE id=$class_id");
+    if (!$class_result) {
+        die("Error fetching class details: " . $conn->error);
+    }
     $class = $class_result->fetch_assoc();
     $num_instances = $class['num_instances'];
 
     // Fetch AMIs for the class
     $ami_result = $conn->query("SELECT ami_id FROM amis WHERE class_id=$class_id");
+    if (!$ami_result) {
+        die("Error fetching AMI details: " . $conn->error);
+    }
     $amis = [];
     while ($row = $ami_result->fetch_assoc()) {
         $amis[] = $row['ami_id'];
@@ -47,14 +53,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Create a temporary directory for the Terraform configuration
     $tf_dir = "/tmp/terraform_" . uniqid();
-    mkdir($tf_dir);
+    if (!mkdir($tf_dir)) {
+        die("Failed to create temporary directory: $tf_dir");
+    }
 
     // Write the Terraform configuration to a file
     $tf_file = $tf_dir . "/main.tf";
-    file_put_contents($tf_file, $tf_config);
+    if (file_put_contents($tf_file, $tf_config) === false) {
+        die("Failed to write Terraform configuration to file: $tf_file");
+    }
 
     // Change the working directory to the temporary directory
-    chdir($tf_dir);
+    if (!chdir($tf_dir)) {
+        die("Failed to change directory to: $tf_dir");
+    }
 
     // Execute Terraform commands
     exec("terraform init 2>&1", $init_output, $init_retval);
@@ -65,4 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             echo "Error applying Terraform configuration: " . implode("\n", $apply_output);
         }
-    } else
+    } else {
+        echo "Error initializing Terraform: " . implode("\n", $init_output);
+    }
+
+    // Clean up
+    unlink($tf_file);
+    rmdir($tf_dir);
+} else {
+    echo "Invalid request.";
+}
+?>

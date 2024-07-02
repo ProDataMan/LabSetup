@@ -45,9 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $tf_config .= "}";
 
+    // Create a temporary directory for the Terraform configuration
+    $tf_dir = "/tmp/terraform_" . uniqid();
+    mkdir($tf_dir);
+
     // Write the Terraform configuration to a file
-    $tf_file = "/tmp/terraform_".uniqid().".tf";
+    $tf_file = $tf_dir . "/main.tf";
     file_put_contents($tf_file, $tf_config);
+
+    // Change the working directory to the temporary directory
+    chdir($tf_dir);
 
     // Execute Terraform commands
     exec("terraform init 2>&1", $init_output, $init_retval);
@@ -58,13 +65,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             echo "Error applying Terraform configuration: " . implode("\n", $apply_output);
         }
-    } else {
-        echo "Error initializing Terraform: " . implode("\n", $init_output);
-    }
-
-    // Clean up
-    unlink($tf_file);
-} else {
-    echo "Invalid request.";
-}
-?>
+    } else

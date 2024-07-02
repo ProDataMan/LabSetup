@@ -1,4 +1,4 @@
-<!-- /var/www/html/add_schedule.html -->
+<!-- /var/www/html/add_schedule.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +17,12 @@
                 die("Connection failed: " . $conn->connect_error);
             }
             $result = $conn->query("SELECT id, class_name FROM classes");
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value='{$row['id']}''>{$row['class_name']}</option>";
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['class_name'], ENT_QUOTES, 'UTF-8') . "</option>";
+                }
+            } else {
+                echo "<option value=''>No classes available</option>";
             }
             $conn->close();
             ?>

@@ -27,7 +27,7 @@
     <nav>
         <a href="index.php">Home</a>
         <a href="add_class.html">Add Class</a>
-        <a href="add_schedule.html">Schedule Class</a>
+        <a href="add_schedule.php">Schedule Class</a>
         <a href="edit_class.php">Edit Class</a>
     </nav>
 </body>

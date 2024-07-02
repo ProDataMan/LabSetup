@@ -1,18 +1,22 @@
-Alter TABLE classes (
+-- Alter existing table to add new columns
+ALTER TABLE amis
+ADD COLUMN session_id VARCHAR(10) NOT NULL;
+
+-- Create new tables if they do not exist
+CREATE TABLE IF NOT EXISTS classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_name VARCHAR(255) NOT NULL
 );
 
-Alter TABLE amis (
+CREATE TABLE IF NOT EXISTS amis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_id INT NOT NULL,
-    session_id varchar(10) NOT NULL,
     ami_id VARCHAR(255) NOT NULL,
     ami_tag VARCHAR(255) NOT NULL,
     FOREIGN KEY (class_id) REFERENCES classes(id)
 );
 
-CREATE TABLE schedule (
+CREATE TABLE IF NOT EXISTS schedule (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_id INT NOT NULL,
     start_date DATE NOT NULL,
@@ -21,7 +25,7 @@ CREATE TABLE schedule (
     FOREIGN KEY (class_id) REFERENCES classes(id)
 );
 
-CREATE TABLE instance_history (
+CREATE TABLE IF NOT EXISTS instance_history (
     id INT AUTO_INCREMENT PRIMARY KEY,
     schedule_id INT NOT NULL,
     ami_id VARCHAR(255) NOT NULL,

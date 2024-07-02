@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Create Terraform configuration
     $tf_config = "provider \"aws\" {
-        region = \"us-west-2\"
+        region = \"us-west-1\"
     }\n\n";
 
     for ($i = 0; $i < $num_instances; $i++) {

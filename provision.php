@@ -94,3 +94,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "Invalid request.";
 }
 ?>
+<br><br>
+<a href="index.php"><button>Back to Home</button></a>

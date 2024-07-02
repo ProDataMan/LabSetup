@@ -1,9 +1,9 @@
-CREATE TABLE classes (
+Alter TABLE classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE amis (
+Alter TABLE amis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_id INT NOT NULL,
     session_id varchar(10) NOT NULL,

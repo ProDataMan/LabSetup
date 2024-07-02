@@ -6,28 +6,19 @@
     <title>AWS EC2 Instance Provisioner</title>
 </head>
 <body>
+    <?php include 'navigation.php'; ?>
     <h1>Provision AWS EC2 Instances</h1>
     <form action="provision.php" method="post">
         <label for="class">Select Class:</label>
         <select name="class" id="class">
             <?php
-            // Enable error reporting
-            error_reporting(E_ALL);
-            ini_set('display_errors', 1);
-
-            // Connect to the database and fetch classes
             $conn = new mysqli('localhost', 'instructor', 'password', 'aws_instructor');
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-            
             $result = $conn->query("SELECT id, class_name FROM classes");
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value='{$row['id']}'>{$row['class_name']}</option>";
-                }
-            } else {
-                echo "<option value=''>No classes available</option>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value='{$row['id']}'>{$row['class_name']}</option>";
             }
             $conn->close();
             ?>

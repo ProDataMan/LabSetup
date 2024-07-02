@@ -33,6 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $conn->close();
 
+    // Debugging: Print environment variables
+    echo "AWS_ACCESS_KEY_ID: " . getenv('AWS_ACCESS_KEY_ID') . "\n";
+    echo "AWS_SECRET_ACCESS_KEY: " . getenv('AWS_SECRET_ACCESS_KEY') . "\n";
+    echo "AWS_DEFAULT_REGION: " . getenv('AWS_DEFAULT_REGION') . "\n";
+
     // Create Terraform configuration
     $tf_config = "provider \"aws\" {
         region = \"us-west-2\"

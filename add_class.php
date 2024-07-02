@@ -1,45 +1,39 @@
-<!-- /var/www/html/add_class.php -->
-<?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $class_name = $_POST['class_name'];
-    $num_instances = $_POST['num_instances'];
-    $ami_ids = $_POST['ami_ids'];
-    $ami_tags = $_POST['ami_tags'];
+<!-- /var/www/html/add_class.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Class</title>
+</head>
+<body>
+    <?php include 'navigation.php'; ?>
+    <h1>Add New Class</h1>
+    <form action="add_class.php" method="post">
+        <label for="class_name">Class Name:</label>
+        <input type="text" id="class_name" name="class_name" required>
+        <br><br>
+        <label for="num_instances">Number of Instances:</label>
+        <input type="number" id="num_instances" name="num_instances" min="1" required>
+        <br><br>
+        <label for="ami_details">AMIs and Default Name Tags:</label>
+        <div id="ami_details">
+            <div>
+                <input type="text" name="ami_ids[]" placeholder="AMI ID" required>
+                <input type="text" name="ami_tags[]" placeholder="Default Name Tag" required>
+            </div>
+        </div>
+        <button type="button" onclick="addAmiInput()">Add Another AMI</button>
+        <br><br>
+        <input type="submit" value="Add Class">
+    </form>
 
-    // Enable error reporting
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
-    // Connect to the database
-    $conn = new mysqli('localhost', 'instructor', 'password', 'aws_instructor');
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Insert the new class into the classes table
-    $stmt = $conn->prepare("INSERT INTO classes (class_name, num_instances) VALUES (?, ?)");
-    $stmt->bind_param("si", $class_name, $num_instances);
-    if ($stmt->execute()) {
-        $class_id = $stmt->insert_id;
-
-        // Insert the AMIs into the amis table
-        $stmt_ami = $conn->prepare("INSERT INTO amis (class_id, ami_id, ami_tag) VALUES (?, ?, ?)");
-        foreach ($ami_ids as $index => $ami_id) {
-            $ami_tag = $ami_tags[$index];
-            $stmt_ami->bind_param("iss", $class_id, $ami_id, $ami_tag);
-            $stmt_ami->execute();
+    <script>
+        function addAmiInput() {
+            const div = document.createElement('div');
+            div.innerHTML = `<input type="text" name="ami_ids[]" placeholder="AMI ID" required>
+                             <input type="text" name="ami_tags[]" placeholder="Default Name Tag" required>`;
+            document.getElementById('ami_details').appendChild(div);
         }
-
-        echo "Class and AMIs added successfully.";
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-
-    // Close connections
-    $stmt->close();
-    $stmt_ami->close();
-    $conn->close();
-} else {
-    echo "Invalid request.";
-}
-?>
+    </script>
+</body>
+</html>

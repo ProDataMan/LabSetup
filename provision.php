@@ -33,11 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $conn->close();
 
-    // Debugging: Print environment variables
-    echo "AWS_ACCESS_KEY_ID: " . getenv('AWS_ACCESS_KEY_ID') . "\n";
-    echo "AWS_SECRET_ACCESS_KEY: " . getenv('AWS_SECRET_ACCESS_KEY') . "\n";
-    echo "AWS_DEFAULT_REGION: " . getenv('AWS_DEFAULT_REGION') . "\n";
-
     // Create Terraform configuration
     $tf_config = "provider \"aws\" {
         region = \"us-west-1\"
@@ -46,14 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     for ($i = 0; $i < $num_students; $i++) {
         foreach ($amis as $index => $ami) {
             $ami_id = $ami['ami_id'];
-            $ami_tag = str_replace('#', $i + 1, $ami['ami_tag']);
+            $ami_tag = "Student " . ($i + 1) . ": " . $ami['ami_tag'];
             $tf_config .= "resource \"aws_instance\" \"example_{$i}_{$index}\" {
-        instance_type = \"t2.micro\"
-        ami           = \"$ami_id\"
-        tags = {
-            Name = \"$ami_tag\"
-        }
-    }\n\n";
+                instance_type = \"t2.micro\"
+                ami           = \"$ami_id\"
+                tags = {
+                    Name = \"$ami_tag\"
+                }
+            }\n\n";
         }
     }
 
@@ -89,7 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Clean up
     array_map('unlink', glob("$tf_dir/*.*"));
-    rmdir($tf_dir);
+    if (!rmdir($tf_dir)) {
+        echo "Warning: Failed to remove directory $tf_dir";
+    }
 } else {
     echo "Invalid request.";
 }

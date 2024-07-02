@@ -36,20 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Create Terraform configuration
     $tf_config = "provider \"aws\" {
         region = \"us-west-2\"
-    }
-
-    resource \"aws_instance\" \"example\" {";
+    }\n\n";
 
     for ($i = 0; $i < $num_instances; $i++) {
         $ami_id = $amis[$i % count($amis)];
-        $tf_config .= "
+        $tf_config .= "resource \"aws_instance\" \"example_$i\" {
         instance_type = \"t2.micro\"
         ami           = \"$ami_id\"
         count         = $num_students
-        ";
+    }\n\n";
     }
-
-    $tf_config .= "}";
 
     // Create a temporary directory for the Terraform configuration
     $tf_dir = "/tmp/terraform_" . uniqid();

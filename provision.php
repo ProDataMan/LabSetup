@@ -4,6 +4,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $class_id = $_POST['class'];
     $num_students = $_POST['students'];
 
+    // Enable error reporting
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
     // Connect to the database
     $conn = new mysqli('localhost', 'instructor', 'password', 'aws_instructor');
     if ($conn->connect_error) {
@@ -46,16 +50,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     file_put_contents($tf_file, $tf_config);
 
     // Execute Terraform commands
-    exec("terraform init", $output, $retval);
-    if ($retval == 0) {
-        exec("terraform apply -auto-approve", $output, $retval);
-        if ($retval == 0) {
+    exec("terraform init 2>&1", $init_output, $init_retval);
+    if ($init_retval == 0) {
+        exec("terraform apply -auto-approve 2>&1", $apply_output, $apply_retval);
+        if ($apply_retval == 0) {
             echo "Instances provisioned successfully.";
         } else {
-            echo "Error applying Terraform configuration.";
+            echo "Error applying Terraform configuration: " . implode("\n", $apply_output);
         }
     } else {
-        echo "Error initializing Terraform.";
+        echo "Error initializing Terraform: " . implode("\n", $init_output);
     }
 
     // Clean up

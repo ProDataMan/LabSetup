@@ -23,28 +23,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $num_instances = $class['num_instances'];
 
     // Fetch AMIs for the class
-    $ami_result = $conn->query("SELECT ami_id FROM amis WHERE class_id=$class_id");
+    $ami_result = $conn->query("SELECT ami_id, ami_tag FROM amis WHERE class_id=$class_id");
     if (!$ami_result) {
         die("Error fetching AMI details: " . $conn->error);
     }
     $amis = [];
     while ($row = $ami_result->fetch_assoc()) {
-        $amis[] = $row['ami_id'];
+        $amis[] = $row;
     }
     $conn->close();
 
     // Create Terraform configuration
     $tf_config = "provider \"aws\" {
-        region = \"us-west-1\"
+        region = \"us-west-2\"
     }\n\n";
 
-    for ($i = 0; $i < $num_instances; $i++) {
-        $ami_id = $amis[$i % count($amis)];
-        $tf_config .= "resource \"aws_instance\" \"example_$i\" {
+    for ($i = 0; $i < $num_students; $i++) {
+        foreach ($amis as $index => $ami) {
+            $ami_id = $ami['ami_id'];
+            $ami_tag = str_replace('#', $i + 1, $ami['ami_tag']);
+            $tf_config .= "resource \"aws_instance\" \"example_{$i}_{$index}\" {
         instance_type = \"t2.micro\"
         ami           = \"$ami_id\"
-        count         = $num_students
+        tags = {
+            Name = \"$ami_tag\"
+        }
     }\n\n";
+        }
     }
 
     // Create a temporary directory for the Terraform configuration
@@ -78,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Clean up
-    unlink($tf_file);
+    array_map('unlink', glob("$tf_dir/*.*"));
     rmdir($tf_dir);
 } else {
     echo "Invalid request.";

@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Create Terraform configuration
     $tf_config = "provider \"aws\" {
-        region = \"us-west-1\"
+        region = \"us-west-2\"
     }\n\n";
 
     for ($i = 0; $i < $num_students; $i++) {
@@ -84,7 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Clean up
     array_map('unlink', glob("$tf_dir/*.*"));
-    if (!rmdir($tf_dir)) {
+    if (rmdir($tf_dir)) {
+        echo "Temporary directory removed successfully.";
+    } else {
         echo "Warning: Failed to remove directory $tf_dir";
     }
 } else {

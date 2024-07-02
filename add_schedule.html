@@ -18,7 +18,7 @@
             }
             $result = $conn->query("SELECT id, class_name FROM classes");
             while ($row = $result->fetch_assoc()) {
-                echo "<option value='{$row['id']}'>{$row['class_name']}</option>";
+                echo "<option value='{$row['id']}''>{$row['class_name']}</option>";
             }
             $conn->close();
             ?>

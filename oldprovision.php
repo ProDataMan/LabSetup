@@ -21,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $class = $class_result->fetch_assoc();
     $num_instances = $class['num_instances'];
-    $terraform_config_path = $class['terraform_config_path'];
 
     // Fetch AMIs for the class
     $ami_result = $conn->query("SELECT ami_id, ami_tag FROM amis WHERE class_id=$class_id");
@@ -53,15 +52,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    // Create a temporary directory for the Terraform configuration
+    $tf_dir = "/tmp/terraform_" . uniqid();
+    if (!mkdir($tf_dir)) {
+        die("Failed to create temporary directory: $tf_dir");
+    }
+
     // Write the Terraform configuration to a file
-    $tf_file = "$terraform_config_path/main.tf";
+    $tf_file = $tf_dir . "/main.tf";
     if (file_put_contents($tf_file, $tf_config) === false) {
         die("Failed to write Terraform configuration to file: $tf_file");
     }
 
-    // Change the working directory to the Terraform configuration path
-    if (!chdir($terraform_config_path)) {
-        die("Failed to change directory to: $terraform_config_path");
+    // Change the working directory to the temporary directory
+    if (!chdir($tf_dir)) {
+        die("Failed to change directory to: $tf_dir");
     }
 
     // Execute Terraform commands
@@ -78,7 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Clean up
-    // Optionally, remove or reset the temporary Terraform configuration if necessary
+    array_map('unlink', glob("$tf_dir/*.*"));
+    if (rmdir($tf_dir)) {
+        echo "Temporary directory removed successfully.";
+    } else {
+        echo "Warning: Failed to remove directory $tf_dir";
+    }
 } else {
     echo "Invalid request.";
 }

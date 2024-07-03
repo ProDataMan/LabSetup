@@ -1,6 +1,6 @@
 -- Alter existing table to add new columns
 ALTER TABLE amis
-ADD COLUMN session_id VARCHAR(10) NOT NULL;
+ADD COLUMN session_id VARCHAR(11) NOT NULL;
 
 -- Create new tables if they do not exist
 CREATE TABLE IF NOT EXISTS classes (

@@ -22,6 +22,9 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# Install Selenium
+RUN pip3 install selenium
+
 # Install Geckodriver
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz && \
     tar -xvzf geckodriver-v0.34.0-linux64.tar.gz && \

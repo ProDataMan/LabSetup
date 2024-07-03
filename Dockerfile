@@ -28,10 +28,10 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckod
     mv geckodriver /usr/local/bin/
 
 # Copy the test script
-COPY test_firefox.py /test_firefox.py
+COPY view_youtube.py /view_youtube.py
 
 # Create a directory for logs
 RUN mkdir /logs
 
 # Run the test script using xvfb
-CMD ["xvfb-run", "-a", "python3", "/test_firefox.py"]
+CMD ["xvfb-run", "-a", "python3", "/view_youtube.py"]

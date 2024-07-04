@@ -1,8 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import time
 import logging
 
@@ -23,27 +20,15 @@ except Exception as e:
 
 try:
     # Navigate to the YouTube livestream
-    logging.info("Navigating to YouTube livestream...")
-    driver.get('https://www.youtube.com/live/EdPaNTT71Ag')
+    livestream_url = 'https://www.youtube.com/live/mYLnPskPI1Y'  # New livestream URL
+    logging.info(f"Navigating to YouTube livestream: {livestream_url}...")
+    driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")
 
-    # Wait for the page to load and the play button to appear
-    logging.info("Waiting for play button to appear...")
-    WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'button.ytp-large-play-button'))
-    )
-    logging.info("Play button found.")
-
-    # Click the play button if it appears
-    play_button = driver.find_element(By.CSS_SELECTOR, 'button.ytp-large-play-button')
-    logging.info("Clicking play button...")
-    play_button.click()
-    logging.info("Play button clicked. Video should be playing.")
-
-    # Wait for a while to ensure the view is registered
-    logging.info("Waiting for 5 minutes to ensure view is registered...")
-    time.sleep(300)  # 300 seconds = 5 minutes
-    logging.info("Waited for 5 minutes.")
+    # Wait for 2 minutes to ensure the view is registered
+    logging.info("Waiting for 2 minutes to ensure view is registered...")
+    time.sleep(120)  # 120 seconds = 2 minutes
+    logging.info("Waited for 2 minutes.")
 
 except Exception as e:
     logging.error(f"An error occurred: {e}")

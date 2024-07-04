@@ -1,5 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 import logging
 
@@ -24,6 +27,21 @@ try:
     logging.info(f"Navigating to YouTube livestream: {livestream_url}...")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")
+
+    # Wait until the video player is loaded
+    logging.info("Waiting for video player to load...")
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'video.html5-main-video'))
+    )
+    logging.info("Video player loaded.")
+
+    # Play the video if it's not already playing
+    video = driver.find_element(By.CSS_SELECTOR, 'video.html5-main-video')
+    if video.get_attribute("paused") == "true":
+        logging.info("Video is paused, clicking play...")
+        video.click()
+    else:
+        logging.info("Video is already playing.")
 
     # Wait for 2 minutes to ensure the view is registered
     logging.info("Waiting for 2 minutes to ensure view is registered...")

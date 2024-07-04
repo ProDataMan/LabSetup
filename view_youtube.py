@@ -45,11 +45,15 @@ try:
     )
     logging.info("Video player loaded.")
 
-    # Play the video if it's not already playing
+    # Scroll the video element into view
+    logging.info("Scrolling video element into view...")
     video = driver.find_element(By.CSS_SELECTOR, 'video.html5-main-video')
+    driver.execute_script("arguments[0].scrollIntoView(true);", video)
+
+    # Play the video if it's not already playing
     if video.get_attribute("paused") == "true":
         logging.info("Video is paused, clicking play...")
-        video.click()
+        driver.execute_script("arguments[0].click();", video)
     else:
         logging.info("Video is already playing.")
 

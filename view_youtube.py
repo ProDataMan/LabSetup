@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
@@ -6,8 +7,17 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import logging
 
+# Ensure the log directory exists
+log_dir = "/logs"
+os.makedirs(log_dir, exist_ok=True)
+
 # Set up logging for debugging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename=os.path.join(log_dir, "view_youtube.log"),
+    filemode='w',
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 options = Options()
 options.headless = True

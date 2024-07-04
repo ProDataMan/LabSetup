@@ -64,10 +64,10 @@ try:
     time.sleep(5)  # Wait for 5 seconds
     driver.execute_script("window.scrollBy(0, -100);")  # Scroll up
 
-    # Wait for 2 minutes to ensure the view is registered
-    logging.info("Waiting for 2 minutes to ensure view is registered...")
-    time.sleep(120)  # 120 seconds = 2 minutes
-    logging.info("Waited for 2 minutes.")
+    # Wait for 4 minutes to ensure the view is registered
+    logging.info("Waiting for 4 minutes to ensure view is registered...")
+    time.sleep(240)  # 240 seconds = 4 minutes
+    logging.info("Waited for 4 minutes.")
 
 except Exception as e:
     logging.error(f"An error occurred: {e}")

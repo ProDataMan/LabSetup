@@ -33,8 +33,14 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckod
 # Copy the test script
 COPY view_youtube.py /view_youtube.py
 
+# Copy the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /entrypoint.sh
+
 # Create a directory for logs
 RUN mkdir /logs
 
-# Run the test script using xvfb
-CMD ["xvfb-run", "-a", "python3", "/view_youtube.py"]
+# Set the entrypoint to the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]

@@ -33,7 +33,7 @@ except Exception as e:
 
 try:
     # Navigate to the YouTube livestream
-    livestream_url = 'https://youtube.com/live/dSxEbHUnG3A'  # New livestream URL
+    livestream_url = 'https://youtube.com/live/08brRkE_ezI'  # New livestream URL
     logging.info(f"Navigating to YouTube livestream: {livestream_url}...")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")

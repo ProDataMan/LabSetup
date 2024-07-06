@@ -1,8 +1,4 @@
 <!-- /var/www/html/edit_class.php -->
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,9 +52,6 @@ ini_set('display_errors', 1);
         <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
         <label for="class_name">Class Name:</label>
         <input type="text" id="class_name" name="class_name" value="<?php echo htmlspecialchars($class['class_name'], ENT_QUOTES, 'UTF-8'); ?>" required>
-        <br><br>
-        <label for="num_instances">Number of Instances:</label>
-        <input type="number" id="num_instances" name="num_instances" value="<?php echo $class['num_instances']; ?>" min="1" required>
         <br><br>
         <label for="terraform_config_path">Terraform Config Path:</label>
         <input type="text" id="terraform_config_path" name="terraform_config_path" value="<?php echo htmlspecialchars($class['terraform_config_path'], ENT_QUOTES, 'UTF-8'); ?>" required>

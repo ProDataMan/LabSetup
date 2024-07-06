@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Insert the new class into the classes table
-    $stmt = $conn->prepare("INSERT INTO classes (class_name, num_instances, terraform_config_path) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO classes (class_name, terraform_config_path) VALUES (?, ?)");
     $stmt->bind_param("sis", $class_name, $num_instances, $terraform_config_path);
     if ($stmt->execute()) {
         $class_id = $stmt->insert_id;

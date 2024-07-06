@@ -58,7 +58,7 @@
         ?>
     </table>
     <br>
-    <a href="add_class.php"><button>Add New Class</button></a>
+    <a href="add_class.html"><button>Add New Class</button></a>
 
     <h2>Provision AWS EC2 Instances</h2>
     <form action="provision.php" method="post">

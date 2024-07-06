@@ -1,4 +1,8 @@
 <!-- /var/www/html/edit_class.php -->
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,3 +67,26 @@
         <div id="ami_details">
             <?php foreach ($amis as $ami) { ?>
             <div>
+                <input type="hidden" name="ami_ids[]" value="<?php echo htmlspecialchars($ami['ami_id'], ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="text" name="ami_tags[]" value="<?php echo htmlspecialchars($ami['ami_tag'], ENT_QUOTES, 'UTF-8'); ?>" placeholder="Default Name Tag" required>
+                <a href="delete_ami.php?ami_id=<?php echo $ami['id']; ?>&class_id=<?php echo $class_id; ?>">Delete</a>
+            </div>
+            <?php } ?>
+        </div>
+        <button type="button" onclick="addAmiInput()">Add Another AMI</button>
+        <br><br>
+        <input type="submit" value="Update Class">
+    </form>
+
+    <script>
+        function addAmiInput() {
+            const div = document.createElement('div');
+            div.innerHTML = `<input type="text" name="ami_ids[]" placeholder="AMI ID" required>
+                             <input type="text" name="ami_tags[]" placeholder="Default Name Tag" required>`;
+            document.getElementById('ami_details').appendChild(div);
+        }
+    </script>
+
+    <?php } ?>
+</body>
+</html>

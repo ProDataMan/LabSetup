@@ -1,4 +1,3 @@
-<!-- /var/www/html/edit_class.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,15 +52,13 @@
         <label for="class_name">Class Name:</label>
         <input type="text" id="class_name" name="class_name" value="<?php echo htmlspecialchars($class['class_name'], ENT_QUOTES, 'UTF-8'); ?>" required>
         <br><br>
-        <label for="terraform_config_path">Terraform Config Path:</label>
-        <input type="text" id="terraform_config_path" name="terraform_config_path" value="<?php echo htmlspecialchars($class['terraform_config_path'], ENT_QUOTES, 'UTF-8'); ?>" required>
-        <br><br>
-        <label for="ami_details">AMIs and Default Name Tags:</label>
+        <label for="ami_details">AMIs, Default Name Tags, and Terraform Configs:</label>
         <div id="ami_details">
             <?php foreach ($amis as $ami) { ?>
             <div>
                 <input type="hidden" name="ami_ids[]" value="<?php echo htmlspecialchars($ami['ami_id'], ENT_QUOTES, 'UTF-8'); ?>">
                 <input type="text" name="ami_tags[]" value="<?php echo htmlspecialchars($ami['ami_tag'], ENT_QUOTES, 'UTF-8'); ?>" placeholder="Default Name Tag" required>
+                <input type="text" name="ami_terraform_configs[]" value="<?php echo htmlspecialchars($ami['terraform_config'], ENT_QUOTES, 'UTF-8'); ?>" placeholder="Terraform Config Name" required>
                 <a href="delete_ami.php?ami_id=<?php echo $ami['id']; ?>&class_id=<?php echo $class_id; ?>">Delete</a>
             </div>
             <?php } ?>
@@ -75,7 +72,8 @@
         function addAmiInput() {
             const div = document.createElement('div');
             div.innerHTML = `<input type="text" name="ami_ids[]" placeholder="AMI ID" required>
-                             <input type="text" name="ami_tags[]" placeholder="Default Name Tag" required>`;
+                             <input type="text" name="ami_tags[]" placeholder="Default Name Tag" required>
+                             <input type="text" name="ami_terraform_configs[]" placeholder="Terraform Config Name" required>`;
             document.getElementById('ami_details').appendChild(div);
         }
     </script>

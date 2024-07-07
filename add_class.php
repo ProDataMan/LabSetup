@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $class_id = $stmt->insert_id;
 
         // Create directory structure for the class
-        $class_dir = "/path/to/classes/$class_name";
+        $class_dir = "~/classes/$class_name";
         if (!mkdir($class_dir, 0777, true)) {
             die("Failed to create directory: $class_dir");
         }

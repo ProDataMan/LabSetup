@@ -76,7 +76,7 @@ try:
 
     # Wait for 2 minutes to ensure the view is registered
     logging.info("Waiting for 2 minutes to ensure view is registered...")
-    time.sleep(120)  # 120 seconds = 2 minutes
+    time.sleep(30)  # 120 seconds = 2 minutes
     logging.info("Waited for 2 minutes.")
 
 except Exception as e:

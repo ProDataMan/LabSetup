@@ -1,7 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $class_name = $_POST['class_name'];
-    $terraform_config_path = $_POST['terraform_config_path'];
     $ami_ids = $_POST['ami_ids'];
     $ami_tags = $_POST['ami_tags'];
     $ami_terraform_configs = $_POST['ami_terraform_configs'];
@@ -17,13 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Insert the new class into the classes table
-    $stmt = $conn->prepare("INSERT INTO classes (class_name, terraform_config_path) VALUES (?, ?)");
-    $stmt->bind_param("ss", $class_name, $terraform_config_path);
+    $stmt = $conn->prepare("INSERT INTO classes (class_name) VALUES (?)");
+    $stmt->bind_param("s", $class_name);
     if ($stmt->execute()) {
         $class_id = $stmt->insert_id;
 
         // Create directory structure for the class
-        $class_dir = "~/classes/$class_name";
+        $class_dir = "/path/to/classes/$class_name";
         if (!mkdir($class_dir, 0777, true)) {
             die("Failed to create directory: $class_dir");
         }

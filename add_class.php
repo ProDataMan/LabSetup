@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $class_id = $stmt->insert_id;
 
         // Create directory structure for the class
-        $class_dir = "/path/to/classes/$class_name";
+        $class_dir = "~/classes/$class_name";
         if (!mkdir($class_dir, 0777, true)) {
             die("Failed to create directory: $class_dir");
         }
@@ -40,11 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_ami->execute();
 
             // Copy the prebuilt Terraform config to the class directory
-            $source_config_path = "/path/to/prebuilt/terraform/$ami_terraform_config";
-            $dest_config_path = "$terraform_subdir/$ami_terraform_config";
-            if (!copy($source_config_path, $dest_config_path)) {
-                die("Failed to copy Terraform config: $source_config_path to $dest_config_path");
-            }
+            //$source_config_path = "~/path/to/prebuilt/terraform/$ami_terraform_config";
+            //$dest_config_path = "$terraform_subdir/$ami_terraform_config";
+            //if (!copy($source_config_path, $dest_config_path)) {
+            //    die("Failed to copy Terraform config: $source_config_path to $dest_config_path");
+            //}
         }
 
         echo "Class and AMIs added successfully.";

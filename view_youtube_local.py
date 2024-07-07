@@ -8,7 +8,7 @@ import time
 import logging
 
 # Ensure the log directory exists
-log_dir = "/home/ubuntu/logs"
+log_dir = "/home/ubuntu/LabSetup/logs"
 os.makedirs(log_dir, exist_ok=True)
 
 # Set up logging for debugging
@@ -18,6 +18,9 @@ logging.basicConfig(
     filemode='w',
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
+# Set display environment variable for Xvfb
+os.environ['DISPLAY'] = ':1'
 
 options = Options()
 options.headless = True
@@ -33,7 +36,7 @@ except Exception as e:
 
 try:
     # Navigate to the YouTube livestream
-    livestream_url = 'https://youtube.com/live/K15glKZyp_k'  # New livestream URL
+    livestream_url = 'https://youtube.com/live/dSxEbHUnG3A'  # New livestream URL
     logging.info(f"Navigating to YouTube livestream: {livestream_url}...")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")

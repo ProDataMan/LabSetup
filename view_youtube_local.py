@@ -28,6 +28,13 @@ options.headless = True
 # Initialize the Firefox driver
 try:
     logging.info("Initializing Firefox driver...")
+    logging.debug(f"Geckodriver path: {os.popen('which geckodriver').read().strip()}")
+    logging.debug(f"Firefox path: {os.popen('which firefox').read().strip()}")
+    
+    # Extra debugging information
+    logging.debug(f"Geckodriver version: {os.popen('geckodriver --version').read().strip()}")
+    logging.debug(f"Firefox version: {os.popen('firefox --version').read().strip()}")
+    
     driver = webdriver.Firefox(options=options)
     logging.info("Firefox driver initialized successfully.")
 except Exception as e:
@@ -36,7 +43,7 @@ except Exception as e:
 
 try:
     # Navigate to the YouTube livestream
-    livestream_url = 'https://youtube.com/live/dSxEbHUnG3A'  # New livestream URL
+    livestream_url = 'https://youtube.com/live/K15glKZyp_k'  # New livestream URL
     logging.info(f"Navigating to YouTube livestream: {livestream_url}...")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")

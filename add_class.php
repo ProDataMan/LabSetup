@@ -1,3 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Class</title>
+</head>
+<body>
+    <?php include 'navigation.php'; ?>
+    <h1>Add New Class</h1>
+    <form action="add_class.php" method="post">
+        <label for="class_name">Class Name:</label>
+        <input type="text" id="class_name" name="class_name" required>
+        <br><br>
+        <label for="ami_details">AMIs, Default Name Tags, and Terraform Configs:</label>
+        <div id="ami_details">
+            <div>
+                <input type="text" name="ami_ids[]" placeholder="AMI ID" required>
+                <input type="text" name="ami_tags[]" placeholder="Default Name Tag" required>
+                <input type="text" name="ami_terraform_configs[]" placeholder="Terraform Config Name" required>
+            </div>
+        </div>
+        <button type="button" onclick="addAmiInput()">Add Another AMI</button>
+        <br><br>
+        <input type="submit" value="Add Class">
+    </form>
+
+    <script>
+        function addAmiInput() {
+            const div = document.createElement('div');
+            div.innerHTML = `<input type="text" name="ami_ids[]" placeholder="AMI ID" required>
+                             <input type="text" name="ami_tags[]" placeholder="Default Name Tag" required>
+                             <input type="text" name="ami_terraform_configs[]" placeholder="Terraform Config Name" required>`;
+            document.getElementById('ami_details').appendChild(div);
+        }
+    </script>
+</body>
+</html>
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $class_name = $_POST['class_name'];
@@ -8,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Enable error reporting
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+
+    // Define the base path for classes
+    $base_path = '/home/ubuntu/classes';
 
     // Connect to the database
     $conn = new mysqli('localhost', 'instructor', 'password', 'aws_instructor');
@@ -22,11 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $class_id = $stmt->insert_id;
 
         // Create directory structure for the class
-        $class_dir = "~/classes/$class_name";
+        $class_dir = $base_path . '/' . $class_name;
         if (!mkdir($class_dir, 0777, true)) {
             die("Failed to create directory: $class_dir");
         }
-        $terraform_subdir = "$class_dir/terraform";
+        $terraform_subdir = $class_dir . '/terraform';
         if (!mkdir($terraform_subdir, 0777, true)) {
             die("Failed to create subdirectory: $terraform_subdir");
         }
@@ -40,8 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_ami->execute();
 
             // Copy the prebuilt Terraform config to the class directory
-            //$source_config_path = "~/path/to/prebuilt/terraform/$ami_terraform_config";
-            //$dest_config_path = "$terraform_subdir/$ami_terraform_config";
+            //$source_config_path = '/path/to/prebuilt/terraform/' . $ami_terraform_config;
+            //$dest_config_path = $terraform_subdir . '/' . $ami_terraform_config;
             //if (!copy($source_config_path, $dest_config_path)) {
             //    die("Failed to copy Terraform config: $source_config_path to $dest_config_path");
             //}

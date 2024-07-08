@@ -19,7 +19,7 @@ driver = None
 # Initialize the Firefox driver
 try:
     logging.info("Initializing Firefox driver...")
-    driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
+    driver = webdriver.Firefox(service=webdriver.firefox.service.Service(GeckoDriverManager().install()), options=options)
     logging.info("Firefox driver initialized successfully.")
 
     # Navigate to a simple URL

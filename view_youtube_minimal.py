@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import logging
+import time
 
 # Set up logging for debugging
 logging.basicConfig(
@@ -23,12 +24,17 @@ try:
     driver = webdriver.Chrome(options=options)
     logging.info("Chromium driver initialized successfully.")
 
-    # Navigate to a simple URL
-    driver.get("https://www.google.com")
-    logging.info("Navigated to Google.")
+    # Navigate to the YouTube livestream URL
+    livestream_url = "https://youtube.com/live/K15glKZyp_k?feature=share"
+    logging.info(f"Navigating to YouTube livestream: {livestream_url}")
+    driver.get(livestream_url)
+    logging.info("Navigated to YouTube livestream.")
 
-    # Print the page title
-    logging.info(f"Page title: {driver.title}")
+    # Wait to ensure the view is registered
+    wait_time = 2 * 60  # 2 minutes
+    logging.info(f"Waiting for {wait_time} seconds to ensure view is registered...")
+    time.sleep(wait_time)
+    logging.info("Waited for 2 minutes.")
 
 except Exception as e:
     logging.error(f"Failed to initialize Chromium driver or navigate: {e}")

@@ -25,10 +25,21 @@ try:
     logging.info("Chromium driver initialized successfully.")
 
     # Navigate to the YouTube livestream URL
-    livestream_url = "https://youtube.com/live/K15glKZyp_k?feature=share"
+    livestream_url = "https://youtube.com/live/K15glKZyp_k"
     logging.info(f"Navigating to YouTube livestream: {livestream_url}")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")
+
+    # Wait for the play button and click it if it exists
+    time.sleep(5)  # Allow the page to load
+    play_button = None
+    try:
+        play_button = driver.find_element("css selector", "button.ytp-large-play-button")
+        if play_button:
+            play_button.click()
+            logging.info("Clicked the play button.")
+    except Exception as e:
+        logging.info(f"No play button found: {e}")
 
     # Wait to ensure the view is registered
     wait_time = 2 * 60  # 2 minutes

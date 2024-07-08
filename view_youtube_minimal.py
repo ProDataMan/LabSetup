@@ -37,12 +37,14 @@ try:
         play_button = driver.find_element("css selector", "button.ytp-large-play-button")
         if play_button:
             play_button.click()
-            logging.info("Clicked the play button.")
+            logging.info("Clicked the play button. If autoplay is enabled this will pause the video")
+            play_button.click()
+            logging.info("Clicked the play button again. if last click paused this click should play")
     except Exception as e:
         logging.info(f"No play button found: {e}")
 
     # Wait to ensure the view is registered
-    wait_time = 6 * 60  # 2 minutes
+    wait_time = 1 * 60  # 2 minutes
     logging.info(f"Waiting for {wait_time} seconds to ensure view is registered...")
     time.sleep(wait_time)
     logging.info("Waited for 2 minutes.")

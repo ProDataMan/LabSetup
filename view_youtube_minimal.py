@@ -41,6 +41,11 @@ try:
             time.sleep(5)
             play_button.click()
             logging.info("Clicked the play button again. if last click paused this click should play")
+            play_button.click()
+            logging.info("Clicked the play button. If autoplay is enabled this will pause the video")
+            time.sleep(5)
+            play_button.click()
+            logging.info("Clicked the play button again. if last click paused this click should play")
     except Exception as e:
         logging.info(f"No play button found: {e}")
 

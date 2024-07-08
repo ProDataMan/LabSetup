@@ -25,7 +25,7 @@ try:
     logging.info("Chromium driver initialized successfully.")
 
     # Navigate to the YouTube livestream URL
-    livestream_url = "https://youtu.be/g6lPeleTHiw"
+    livestream_url = "https://www.youtube.com/playlist?list=PLfsGxRwfvk1QhsNZJRz52nf4jRDHmN7sM"
     logging.info(f"Navigating to YouTube livestream: {livestream_url}")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")
@@ -41,6 +41,7 @@ try:
             time.sleep(5)
             play_button.click()
             logging.info("Clicked the play button again. if last click paused this click should play")
+            time.sleep(5)
             play_button.click()
             logging.info("Clicked the play button. If autoplay is enabled this will pause the video")
             time.sleep(5)

@@ -1,8 +1,6 @@
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.chrome.options import Options
 import logging
-import os
 
 # Set up logging for debugging
 logging.basicConfig(
@@ -14,16 +12,16 @@ logging.basicConfig(
 
 options = Options()
 options.headless = True
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
 
 driver = None
 
-# Initialize the Firefox driver
+# Initialize the Chromium driver
 try:
-    logging.info("Initializing Firefox driver...")
-    driver_path = GeckoDriverManager().install()
-    logging.info(f"Using Geckodriver from: {driver_path}")
-    driver = webdriver.Firefox(service=webdriver.firefox.service.Service(driver_path), options=options)
-    logging.info("Firefox driver initialized successfully.")
+    logging.info("Initializing Chromium driver...")
+    driver = webdriver.Chrome(options=options)
+    logging.info("Chromium driver initialized successfully.")
 
     # Navigate to a simple URL
     driver.get("https://www.google.com")
@@ -33,9 +31,9 @@ try:
     logging.info(f"Page title: {driver.title}")
 
 except Exception as e:
-    logging.error(f"Failed to initialize Firefox driver or navigate: {e}")
+    logging.error(f"Failed to initialize Chromium driver or navigate: {e}")
 
 finally:
     if driver:
         driver.quit()
-        logging.info("Firefox driver closed.")
+        logging.info("Chromium driver closed.")

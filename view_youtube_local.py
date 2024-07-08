@@ -20,7 +20,7 @@ logging.basicConfig(
 )
 
 # Set display environment variable for Xvfb
-os.environ['DISPLAY'] = ':1'
+os.environ['DISPLAY'] = ':99'
 
 options = Options()
 options.headless = True
@@ -43,7 +43,7 @@ except Exception as e:
 
 try:
     # Navigate to the YouTube livestream
-    livestream_url = 'https://youtube.com/live/K15glKZyp_k'  # New livestream URL
+    livestream_url = 'https://youtube.com/live/K15glKZyp_k?feature=share'  # New livestream URL
     logging.info(f"Navigating to YouTube livestream: {livestream_url}...")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")

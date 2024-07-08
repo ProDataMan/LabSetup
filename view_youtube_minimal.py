@@ -25,7 +25,7 @@ try:
     logging.info("Chromium driver initialized successfully.")
 
     # Navigate to the YouTube livestream URL
-    livestream_url = "https://youtube.com/live/K15glKZyp_k"
+    livestream_url = "https://youtu.be/g6lPeleTHiw?si=6mTl_zisioUJ2YGA"
     logging.info(f"Navigating to YouTube livestream: {livestream_url}")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")
@@ -42,7 +42,7 @@ try:
         logging.info(f"No play button found: {e}")
 
     # Wait to ensure the view is registered
-    wait_time = 25 * 60  # 2 minutes
+    wait_time = 6 * 60  # 2 minutes
     logging.info(f"Waiting for {wait_time} seconds to ensure view is registered...")
     time.sleep(wait_time)
     logging.info("Waited for 2 minutes.")

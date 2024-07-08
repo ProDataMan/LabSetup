@@ -42,7 +42,7 @@ try:
         logging.info(f"No play button found: {e}")
 
     # Wait to ensure the view is registered
-    wait_time = 7 * 60  # 2 minutes
+    wait_time = 25 * 60  # 2 minutes
     logging.info(f"Waiting for {wait_time} seconds to ensure view is registered...")
     time.sleep(wait_time)
     logging.info("Waited for 2 minutes.")

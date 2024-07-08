@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from webdriver_manager.firefox import GeckoDriverManager
 import logging
 
 # Set up logging for debugging
@@ -18,7 +19,7 @@ driver = None
 # Initialize the Firefox driver
 try:
     logging.info("Initializing Firefox driver...")
-    driver = webdriver.Firefox(options=options)
+    driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
     logging.info("Firefox driver initialized successfully.")
 
     # Navigate to a simple URL

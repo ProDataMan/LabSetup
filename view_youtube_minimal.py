@@ -25,7 +25,7 @@ try:
     logging.info("Chromium driver initialized successfully.")
 
     # Navigate to the YouTube livestream URL
-    livestream_url = "https://youtu.be/g6lPeleTHiw?si=6mTl_zisioUJ2YGA"
+    livestream_url = "https://youtu.be/g6lPeleTHiw"
     logging.info(f"Navigating to YouTube livestream: {livestream_url}")
     driver.get(livestream_url)
     logging.info("Navigated to YouTube livestream.")

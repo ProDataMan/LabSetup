@@ -13,6 +13,8 @@ logging.basicConfig(
 options = Options()
 options.headless = True
 
+driver = None
+
 # Initialize the Firefox driver
 try:
     logging.info("Initializing Firefox driver...")
@@ -28,5 +30,8 @@ try:
 
 except Exception as e:
     logging.error(f"Failed to initialize Firefox driver or navigate: {e}")
+
 finally:
-    driver.quit()
+    if driver:
+        driver.quit()
+        logging.info("Firefox driver closed.")

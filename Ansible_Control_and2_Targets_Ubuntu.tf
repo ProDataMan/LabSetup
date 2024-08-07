@@ -20,6 +20,10 @@ variable "key_name" {
   description = "ssh key to connect"
   default     = "FullStack"
 }
+variable "key_file" {
+  description = "ssh key to connect"
+  default     = "FullStack.pem"
+}
 
 # Create the control node instances
 resource "aws_instance" "control_node" {
@@ -27,7 +31,7 @@ resource "aws_instance" "control_node" {
 
   ami                    = var.base_ami
   instance_type          = "t2.micro"
-  key_name               = "FullStack"
+  key_name               = var.key_name
   vpc_security_group_ids = [data.aws_security_group.allin.id]
 
   tags = {
@@ -37,7 +41,7 @@ resource "aws_instance" "control_node" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = file("FullStack.pem")
+    private_key = file(var.key_file)
     host        = self.public_ip
   }
 
@@ -55,7 +59,7 @@ resource "aws_instance" "target_node_1" {
 
   ami                    = var.base_ami
   instance_type          = "t2.micro"
-  key_name               = "FullStack"
+  key_name               = var.key_name
   vpc_security_group_ids = [data.aws_security_group.allin.id]
 
   tags = {
@@ -108,7 +112,7 @@ resource "null_resource" "copy_inventory_files" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("FullStack.pem")
+      private_key = file(var.key_file)
       host        = aws_instance.control_node[count.index].public_ip
     }
   }
@@ -134,7 +138,7 @@ resource "null_resource" "run_ansible" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = file("FullStack.pem")
+    private_key = file(var.key_file)
     host        = aws_instance.control_node[count.index].public_ip
   }
 }
@@ -146,7 +150,7 @@ resource "null_resource" "ensure_html_directory" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = file("FullStack.pem")
+    private_key = file(var.key_file)
     host        = element(concat(aws_instance.target_node_1.*.public_ip, aws_instance.target_node_2.*.public_ip), count.index)
   }
 
@@ -170,6 +174,6 @@ resource "null_resource" "copy_html_to_target_nodes" {
   }
 
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o ConnectionAttempts=5 -r -i FullStack.pem ./html ubuntu@${element(concat(aws_instance.target_node_1.*.public_ip, aws_instance.target_node_2.*.public_ip), count.index)}:/var/www/html/"
+    command = "scp -o StrictHostKeyChecking=no -o ConnectionAttempts=5 -r -i ${var.key_file} html/ ubuntu@${element(concat(aws_instance.target_node_1.*.public_ip, aws_instance.target_node_2.*.public_ip), count.index)}:/var/www/html/"
   }
 }
